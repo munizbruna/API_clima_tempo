@@ -3,15 +3,17 @@ const axios = require('axios');
 const path = require('path');
 const cors = require('cors');
 
-// chama arquivo que esta protegendo a key da api
-const config = require('../config.json')
+// chama arquivo que está protegendo a key da api
+const config = require('./config.json')
 
 // define a key da api
 const API_KEY = config.API_KEY;
 
 const app = express();
 const PORT = 3000;
-app.listen(PORT);
+app.listen(PORT, () => {
+    console.log("Site no ar!", `http://localhost:${PORT}/climatempo/Marilia`);
+});
 
 app.use(cors());
 app.use(express.json());
@@ -46,5 +48,4 @@ app.get('/climatempo/:cidade', async (req, res) => {
         console.error("Erro ao obter dados do clima:", error);
         res.status(500).send("Erro ao obter dados do clima"); // Envia um erro 500 em caso de falha na solicitação
     }
-    
 });
