@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Previsão do Tempo</title>
+</head>
+
+<body>
+    <h1>Consulta de Previsão do Tempo</h1>
+    <form id="weatherForm">
+        <label for="cityInput">Cidade:</label>
+        <input type="text" id="cityInput" name="cityInput"><br><br>
+        <button type="submit">Consultar</button>
+    </form>
+
+    <div id="weatherResult"></div>
+
+
+</body>
+<script>
+    document.getElementById('weatherForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const city = document.getElementById('cityInput').value;
+
+        console.log(city);
+
+        fetch(`http://localhost:3000/climatempo/${city}`)
+            .then(response => response.json())
+            .then(data => {
+                const weatherResultDiv = document.getElementById('weatherResult');
+                if (data.Temperatura) {
+                    weatherResultDiv.innerHTML = `Temperatura: ${data.Temperatura}°C<br>
+                                                        Umidade: ${data.Umidade}%<br>
+                                                        Velocidade do Vento: ${data.VelocidadeDoVento} m/s<br>
+                                                        Clima: ${data.Clima}`;
+                } else {
+                    weatherResultDiv.innerHTML = 'Erro ao obter dados meteorológicos.';
+                }
+            })
+            .catch(error => console.error('Erro ao obter dados:', error));
+    });
+
+</script>
+
+</html>
